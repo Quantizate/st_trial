@@ -1,6 +1,7 @@
 import torch
 # import torch.nn.functional as F
 # import pandas as pd
+import torch.nn as nn
 import matplotlib.pyplot as plt # for making figures
 # from pprint import pprint
 import string
@@ -9,6 +10,9 @@ import streamlit as st
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+st.title('Next Character Prediction')
+
+st.write(device)
 # Open the file and read the content
 with open('shakespeare_input.txt', 'r') as file:
     text = file.read()
@@ -80,9 +84,9 @@ def plot_emb(emb, itos):
 class NextChar(nn.Module):
   def __init__(self, block_size, vocab_size, emb_dim, hidden_size):
     super().__init__()
-    self.emb = torch.nn.Embedding(vocab_size, emb_dim)
-    self.lin1 = torch.nn.Linear(block_size * emb_dim, hidden_size)
-    self.lin2 = torch.nn.Linear(hidden_size, vocab_size)
+    self.emb = nn.Embedding(vocab_size, emb_dim)
+    self.lin1 = nn.Linear(block_size * emb_dim, hidden_size)
+    self.lin2 = nn.Linear(hidden_size, vocab_size)
 
   def forward(self, x):
     x = self.emb(x)
