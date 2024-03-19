@@ -1,11 +1,10 @@
 import torch
-import torch.nn.functional as F
-from torch import nn
-import pandas as pd
+# import torch.nn.functional as F
+# import pandas as pd
 import matplotlib.pyplot as plt # for making figures
-from pprint import pprint
+# from pprint import pprint
 import string
-from sklearn.manifold import TSNE
+import sklearn as sk
 import streamlit as st
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -65,7 +64,7 @@ def plot_emb(emb, itos):
             plt.text(x + 0.5, y + 0.5, itos[i])
         plt.title('Embedding visualization')
     else: 
-        tsne = TSNE(n_components=2, perplexity=24, random_state=0)
+        tsne = sk.manifold.TSNE(n_components=2, perplexity=24, random_state=0)
         X_tsne = tsne.fit_transform(emb.weight.detach().numpy())
 
         for i in range(len(itos)):
@@ -81,9 +80,9 @@ def plot_emb(emb, itos):
 class NextChar(nn.Module):
   def __init__(self, block_size, vocab_size, emb_dim, hidden_size):
     super().__init__()
-    self.emb = nn.Embedding(vocab_size, emb_dim)
-    self.lin1 = nn.Linear(block_size * emb_dim, hidden_size)
-    self.lin2 = nn.Linear(hidden_size, vocab_size)
+    self.emb = torch.nn.Embedding(vocab_size, emb_dim)
+    self.lin1 = torch.nn.Linear(block_size * emb_dim, hidden_size)
+    self.lin2 = torch.nn.Linear(hidden_size, vocab_size)
 
   def forward(self, x):
     x = self.emb(x)

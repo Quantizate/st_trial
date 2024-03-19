@@ -1,4 +1,4 @@
 matplotlib
 torch
-sklearn
+scikit-learn
 streamlit
