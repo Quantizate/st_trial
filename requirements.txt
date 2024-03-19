@@ -1,0 +1,4 @@
+matplotlib
+torch
+sklearn
+streamlit
